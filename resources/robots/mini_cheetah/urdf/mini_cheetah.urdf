@@ -1,0 +1,457 @@
+<?xml version="1.0" ?>
+<robot name="mini_cheetah" xmlns:xacro="http://ros.org/wiki/xacro">
+    
+    <material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+  <material name="blue">
+    <color rgba="0.0 0.0 0.8 1.0"/>
+  </material>
+  <material name="green">
+    <color rgba="0.0 0.8 0.0 1.0"/>
+  </material>
+  <material name="grey">
+    <color rgba="0.2 0.2 0.2 1.0"/>
+  </material>
+  <material name="silver">
+    <color rgba="0.913725490196 0.913725490196 0.847058823529 1.0"/>
+  </material>
+  <material name="orange">
+    <!-- <color rgba="1.0 0.423529411765 0.0392156862745 1.0"/> -->
+    <color rgba="0.12 0.15 0.2 1.0"/>
+  </material>
+  <material name="brown">
+    <color rgba="0.870588235294 0.811764705882 0.764705882353 1.0"/>
+  </material>
+  <material name="red">
+    <color rgba="0.8 0.0 0.0 1.0"/>
+  </material>
+  <material name="white">
+    <color rgba="1.0 1.0 1.0 1.0"/>
+  </material>
+
+   <link name="base">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <inertial>
+            <mass value="3.3"/>
+            <origin xyz="0.0 0.0 0.0"/>
+            <inertia ixx="0.011253" ixy="0" ixz="0" iyy="0.362030" iyz="0" izz="0.042673"/>
+        </inertial>
+  </link>
+    <joint name="floating_base" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="base"/>
+        <child link="trunk"/>
+      </joint>
+    <link name="trunk">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_body.obj"/>
+            </geometry>
+            <origin rpy="0 0.0 0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <!-- <collision>
+            <geometry>
+                <mesh filename="meshes/mini_body.obj"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </collision> -->
+        <collision>
+          <origin rpy="0 0 0" xyz="0 0 0"/>
+          <geometry>
+            <box size="0.23 0.18 0.1"/>
+          </geometry>
+        </collision>
+    </link>
+    <joint name="imu_joint" type="fixed">
+    <parent link="trunk"/>
+    <child link="imu_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+   </link>
+
+    <!--!!!!!!!!!!!! Front Right Leg !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="FR_hip_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="0.19 -0.049 0.0"/>
+        <parent link="trunk"/>
+        <child link="FR_hip"/>
+        <!-- <actuator gear_ratio="6" voltage="24">
+          <friction damping="0.01" dry_friction="0.2"/>
+          <motor Kt="0.05" R="0.173" TauMax="3"/>
+          <rotor_inertia ixx="33.0e-6" iyy="0.000033" izz="63e-6" iyz="0.0" ixy="0" ixz="0" />
+        </actuator> -->
+        <dynamics damping="0" friction="0"/>
+        <limit effort="18" lower="-1.6" upper="1.6" velocity="40"/>
+
+    </joint>
+    <link name="FR_hip">
+        <inertial>
+            <mass value="0.54"/>
+            <origin xyz="0.0 0.036 0."/>
+            <inertia ixx="0.000381" ixy="0.000058" ixz="0.00000045" 
+                iyy="0.000560" iyz="0.00000095" izz="0.000444"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_abad.obj"/>
+            </geometry>
+            <origin rpy="3.141592 0.0 1.5708" xyz="-0.055 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="meshes/mini_abad.obj"/>
+            </geometry>
+            <origin rpy="3.141592 0 1.5708" xyz="-0.055 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="FR_thigh_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.062 0.00"/>
+        <parent link="FR_hip"/>
+        <child link="FR_thigh"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="18" lower="-2.6" upper="2.6" velocity="40"/>
+    </joint>
+    <link name="FR_thigh">
+        <inertial>
+            <mass value="0.634"/>
+            <origin xyz="0.0 0.016 -0.02"/>
+            <inertia ixx="0.001983" ixy="0.000245" ixz="0.000013" 
+                iyy="0.002103" iyz="0.0000015" izz="0.000408"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_upper_link.obj"/>
+            </geometry>
+            <origin rpy="0.0 -1.5708 0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+          <origin rpy="0 1.57079632679 0" xyz="0 0 -0.105"/>
+          <geometry>
+            <box size="0.17 0.015 0.030"/>
+          </geometry>
+        </collision>
+    </link>
+
+    <joint name="FR_calf_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0.0 0.0 -0.209"/>
+        <parent link="FR_thigh"/>
+        <child link="FR_calf"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="26" lower="-2.6" upper="2.6" velocity="26"/>
+    </joint>
+    <link name="FR_calf">
+        <inertial>
+            <mass value="0.064"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000245" ixy="0" ixz="0.0" iyy="0.000248" iyz="0" izz="0.000006"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_lower_link.obj"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="meshes/mini_lower_link.obj"/>
+            </geometry>
+            <origin rpy="0 3.141592 0.0" xyz="0 0 0"/>
+        </collision>
+    </link>
+
+<!--!!!!!!!!!!!! Front Left Leg !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="FL_hip_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="0.19 0.049 0.0"/>
+        <parent link="trunk"/>
+        <child link="FL_hip"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="18" lower="-1.6" upper="1.6" velocity="40"/>
+    </joint>
+    <link name="FL_hip">
+        <inertial>
+            <mass value="0.54"/>
+            <origin xyz="0.0 0.036 0."/>
+            <inertia ixx="0.000381" ixy="0.000058" ixz="0.00000045" 
+                iyy="0.000560" iyz="0.00000095" izz="0.000444"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_abad.obj"/>
+            </geometry>
+            <origin rpy="0. 0. -1.5708" xyz="-0.055 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="meshes/mini_abad.obj"/>
+            </geometry>
+            <origin rpy="0 0 -1.5708" xyz="-0.055 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="FL_thigh_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.062 0.00"/>
+        <parent link="FL_hip"/>
+        <child link="FL_thigh"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="18" lower="-2.6" upper="2.6" velocity="40"/>
+    </joint>
+    <link name="FL_thigh">
+        <inertial>
+            <mass value="0.634"/>
+            <origin xyz="0.0 0.016 -0.02"/>
+            <inertia ixx="0.001983" ixy="0.000245" ixz="0.000013" 
+                iyy="0.002103" iyz="0.0000015" izz="0.000408"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_upper_link.obj"/>
+            </geometry>
+            <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+          <origin rpy="0 1.57079632679 0" xyz="0 0 -0.105"/>
+          <geometry>
+            <box size="0.17 0.015 0.030"/>
+          </geometry>
+        </collision>
+    </link>
+
+    <joint name="FL_calf_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0.0 0.0 -0.209"/>
+        <parent link="FL_thigh"/>
+        <child link="FL_calf"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="26" lower="-2.6" upper="2.6" velocity="26"/>
+    </joint>
+    <link name="FL_calf">
+        <inertial>
+            <mass value="0.064"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000245" ixy="0" ixz="0.0" iyy="0.000248" iyz="0" izz="0.000006"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_lower_link.obj"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="meshes/mini_lower_link.obj"/>
+            </geometry>
+            <origin rpy="0 3.141592 0.0" xyz="0 0 0"/>
+        </collision>
+    </link>
+
+<!--!!!!!!!!!!!! Hind Right Leg !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="RR_hip_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="-0.19 -0.049 0.0"/>
+        <parent link="trunk"/>
+        <child link="RR_hip"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="18" lower="-1.6" upper="1.6" velocity="40"/>
+    </joint>
+    <link name="RR_hip">
+        <inertial>
+            <mass value="0.54"/>
+            <origin xyz="0.0 0.036 0."/>
+            <inertia ixx="0.000381" ixy="0.000058" ixz="0.00000045" 
+                iyy="0.000560" iyz="0.00000095" izz="0.000444"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_abad.obj"/>
+            </geometry>
+            <origin rpy="0.0 0.0 1.5708" xyz="0.055 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="meshes/mini_abad.obj"/>
+            </geometry>
+            <origin rpy="0 0 1.5708" xyz="0.055 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="RR_thigh_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.062 0.00"/>
+        <parent link="RR_hip"/>
+        <child link="RR_thigh"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="18" lower="-2.6" upper="2.6" velocity="40"/>
+    </joint>
+    <link name="RR_thigh">
+        <inertial>
+            <mass value="0.634"/>
+            <origin xyz="0.0 0.016 -0.02"/>
+            <inertia ixx="0.001983" ixy="0.000245" ixz="0.000013" 
+                iyy="0.002103" iyz="0.0000015" izz="0.000408"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_upper_link.obj"/>
+            </geometry>
+            <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <!-- <collision>
+            <geometry>
+                <mesh filename="meshes/mini_upper_link.obj"/>
+            </geometry>
+            <origin rpy="0 -1.5708 0.0" xyz="0 0 0"/>
+        </collision> -->
+        <collision>
+          <origin rpy="0 1.57079632679 0" xyz="0 0 -0.105"/>
+          <geometry>
+            <box size="0.17 0.015 0.030"/>
+          </geometry>
+        </collision>
+    </link>
+
+    <joint name="RR_calf_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0.0 0.0 -0.209"/>
+        <parent link="RR_thigh"/>
+        <child link="RR_calf"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="26" lower="-2.6" upper="2.6" velocity="26"/>
+    </joint>
+    <link name="RR_calf">
+        <inertial>
+            <mass value="0.064"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000245" ixy="0" ixz="0.0" iyy="0.000248" iyz="0" izz="0.000006"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_lower_link.obj"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="meshes/mini_lower_link.obj"/>
+            </geometry>
+            <origin rpy="0 3.141592 0.0" xyz="0 0 0"/>
+        </collision>
+    </link>
+
+<!--!!!!!!!!!!!! Hind Left Leg !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="RL_hip_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="-0.19 0.049 0.0"/>
+        <parent link="trunk"/>
+        <child link="RL_hip"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="18" lower="-1.6" upper="1.6" velocity="40"/>
+    </joint>
+    <link name="RL_hip">
+        <inertial>
+            <mass value="0.54"/>
+            <origin xyz="0.0 0.036 0."/>
+            <inertia ixx="0.000381" ixy="0.000058" ixz="0.00000045" 
+                iyy="0.000560" iyz="0.00000095" izz="0.000444"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_abad.obj"/>
+            </geometry>
+            <origin rpy="3.141592 0.0 -1.5708" xyz="0.055 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="meshes/mini_abad.obj"/>
+            </geometry>
+            <origin rpy="3.141592 0 -1.5708" xyz="0.055 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="RL_thigh_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.062 0.00"/>
+        <parent link="RL_hip"/>
+        <child link="RL_thigh"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="18" lower="-2.6" upper="2.6" velocity="40"/>
+    </joint>
+    <link name="RL_thigh">
+        <inertial>
+            <mass value="0.634"/>
+            <origin xyz="0.0 0.016 -0.02"/>
+            <inertia ixx="0.001983" ixy="0.000245" ixz="0.000013" 
+                iyy="0.002103" iyz="0.0000015" izz="0.000408"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_upper_link.obj"/>
+            </geometry>
+            <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <!-- <collision>
+            <geometry>
+                <mesh filename="meshes/mini_upper_link.obj"/>
+            </geometry>
+            <origin rpy="0 -1.5708 0.0" xyz="0 0 0"/>
+        </collision> -->
+        <collision>
+          <origin rpy="0 1.57079632679 0" xyz="0 0 -0.105"/>
+          <geometry>
+            <box size="0.17 0.015 0.030"/>
+          </geometry>
+        </collision>
+    </link>
+
+    <joint name="RL_calf_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0.0 0.0 -0.209"/>
+        <parent link="RL_thigh"/>
+        <child link="RL_calf"/>
+        <dynamics damping="0" friction="0"/>
+        <limit effort="26" lower="-2.6" upper="2.6" velocity="26"/>
+    </joint>
+    <link name="RL_calf">
+        <inertial>
+            <mass value="0.064"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000245" ixy="0" ixz="0.0" iyy="0.000248" iyz="0" izz="0.000006"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="meshes/mini_lower_link.obj"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="meshes/mini_lower_link.obj"/>
+            </geometry>
+            <origin rpy="0 3.141592 0.0" xyz="0 0 0"/>
+        </collision>
+    </link>
+
+</robot>

@@ -1,0 +1,714 @@
+<?xml version="1.0" ?>
+<robot name="mini_cheetah" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<material name="cheetah_material">
+    <color rgba="0.7 0.7 0.7 1.0"/>
+</material>
+
+
+<!--!!!!!!!!!!!!!!!!!!BODY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+<!--   <link name="trunk">
+        <inertial>
+            <mass value="3.3"/>
+            <origin xyz="0.0 0.0 0.0"/>
+            <inertia ixx="0.011253" ixy="0" ixz="0" iyy="0.036203" iyz="0" izz="0.042673"/>
+        </inertial>
+        <visual>
+            <geometry>
+              mesh filename="meshes/mini_body.obj"/!!!
+	        <box size="0.23 0.18 0.1"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+              mesh filename="meshes/mini_body.obj"/
+	      <box size="0.23 0.18 0.1"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </collision>
+        <material name="cheetah_material"/>
+    </link>
+
+ -->
+<link name="base">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.012731 0.002186 0.000515"/>
+      <mass value="3.3"/>
+      <inertia ixx="0.01683993" ixy="8.3902e-05" ixz="0.000597679" iyy="0.056579028" iyz="2.5134e-05" izz="0.064713601"/>
+    </inertial>
+  </link>
+  <joint name="floating_base" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <parent link="base"/>
+    <child link="trunk"/>
+  </joint>
+  <link name="trunk">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.23 0.18 0.1"/>
+        </geometry>
+      <!-- <geometry>
+        <mesh filename="../meshes/trunk.dae" scale="1 1 1"/>
+      </geometry> -->
+      <material name="cheetah_material"/>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.23 0.18 0.1"/>
+      </geometry>
+    </collision>
+    <material name="cheetah_material"/>
+  </link>
+  <!-- <joint name="imu_joint" type="fixed">
+    <parent link="trunk"/>
+    <child link="imu_link"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="red"/>
+    </visual> -->
+    <!-- <collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size=".001 .001 .001"/>
+      </geometry>
+    </collision> 
+  </link> -->
+
+
+<!--!!!!!!!!!!!! Front Left Leg !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="FL_hip_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="0.19 0.049 0.0"/>
+        <parent link="trunk"/>
+        <child link="FL_hip"/>
+	<limit effort="18" lower="-1.6" upper="1.6" velocity="40"/>
+    </joint>
+    <link name="FL_hip">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.54"/>
+            <origin xyz="0.0 0.036 0."/>
+            <inertia ixx="0.000381" ixy="0.000058" ixz="0.00000045" 
+                iyy="0.000560" iyz="0.00000095" izz="0.000444"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.01" radius = "0.0475"/>
+            </geometry>
+            <origin rpy="0. 1.5708 -1.5708" xyz="-0.055 0.0 0.0"/>
+        </visual>
+	<visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.06" radius = "0.0425"/>
+            </geometry>
+            <!--origin rpy="3.141592 0.0 1.5708" xyz="-0.055 0.0 0.0"/-->
+	    <origin rpy="1.5708 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.01" radius = "0.0475"/>
+            </geometry>
+            <!--origin rpy="0 0 -1.5708" xyz="-0.055 0 0"/-->
+	    <origin rpy="0 1.5708 -1.5708" xyz="-0.055 0.0 0.0"/>
+        </collision>
+	<collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.06" radius = "0.0425"/>
+            </geometry>
+            <!--origin rpy="0 0 -1.5708" xyz="-0.055 0 0"/-->
+	    <origin rpy="1.5708 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+
+    <joint name="FL_hip_fixed" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.081 0"/>
+    <parent link="FL_hip"/>
+    <child link="FL_thigh_shoulder"/>
+  </joint>
+  <!-- this link is only for collision -->
+  <link name="FL_thigh_shoulder">
+    <!-- <collision>
+      <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.032" radius="0.041"/>
+      </geometry>
+    </collision> -->
+  </link>
+
+    <joint name="FL_thigh_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.062 0.00"/>
+        <parent link="FL_hip"/>
+        <child link="FL_thigh"/>
+	<limit effort="18" lower="-2.6" upper="2.6" velocity="40"/>
+    </joint>
+    <link name="FL_thigh">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.634"/>
+            <origin xyz="0.0 0.016 -0.02"/>
+            <inertia ixx="0.001983" ixy="0.000245" ixz="0.000013" 
+                iyy="0.002103" iyz="0.0000015" izz="0.000408"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_upper_link.obj"/-->
+	      <cylinder length ="0.17" radius = "0.015"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.105"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_upper_link.obj"/-->
+	      <cylinder length ="0.17" radius = "0.015"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.105"/>
+        </collision>
+    </link>
+
+    <joint name="FL_calf_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0.0 0.0 -0.209"/>
+        <parent link="FL_thigh"/>
+        <child link="FL_calf"/>
+	<limit effort="26" lower="-2.6" upper="2.6" velocity="26"/>
+    </joint>
+    <link name="FL_calf">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.064"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000245" ixy="0" ixz="0.0" iyy="0.000248" iyz="0" izz="0.000006"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	      <cylinder length ="0.15" radius = "0.01"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 -0.095"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	      <cylinder length ="0.15" radius = "0.01"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0 0 -0.095"/>
+        </collision>
+    </link>
+    <!-- Adapter to Foot joint -->
+    <joint name="FL_foot_fixed" type="fixed">
+        <parent link="FL_calf"/>
+        <child link="FL_foot"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.19"/>
+    </joint>
+    <link name="FL_foot">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.0"/>
+            <inertia ixx="0.000025" ixy="0" ixz="0.0" iyy="0.000025" iyz="0" izz="0.000025"/>
+        </inertial>
+	<visual>
+            <geometry>
+              <sphere radius = "0.0175"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+	<collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	      <sphere radius = "0.0175"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0 0 0"/>
+        </collision>
+    </link>
+	
+
+
+    
+    <!--!!!!!!!!!!!! Front Right Leg !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+
+    <!--!!!!Joint!!!!!!!!!!!!-->
+    <joint name="FR_hip_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="0.19 -0.049 0.0"/>
+        <parent link="trunk"/>
+        <child link="FR_hip"/>
+	<limit effort="18" lower="-1.6" upper="1.6" velocity="40"/>
+    </joint>
+    <link name="FR_hip">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.54"/>
+            <origin xyz="0.0 0.036 0."/>
+            <inertia ixx="0.000381" ixy="0.000058" ixz="0.00000045" 
+                iyy="0.000560" iyz="0.00000095" izz="0.000444"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.01" radius = "0.0475"/>
+            </geometry>
+            <!--origin rpy="3.141592 0.0 1.5708" xyz="-0.055 0.0 0.0"/-->
+	    <origin rpy="3.141592 1.5708 1.5708" xyz="-0.055 0.0 0.0"/>
+        </visual>
+	<visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.06" radius = "0.0425"/>
+            </geometry>
+            <!--origin rpy="3.141592 0.0 1.5708" xyz="-0.055 0.0 0.0"/-->
+	    <origin rpy="1.5708 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.01" radius = "0.0475"/>
+            </geometry>
+            <origin rpy="3.141592 1.5708 1.5708" xyz="-0.055 0 0"/>
+        </collision>
+	<collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.06" radius = "0.0425"/>
+            </geometry>
+            <origin rpy="1.5708 0.0 0.0" xyz="-0.055 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="FR_hip_fixed" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.081 0"/>
+    <parent link="FR_hip"/>
+    <child link="FR_thigh_shoulder"/>
+  </joint>
+  <!-- this link is only for collision -->
+  <link name="FR_thigh_shoulder">
+    <!-- <collision>
+      <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.032" radius="0.041"/>
+      </geometry>
+    </collision> -->
+  </link>
+
+    <joint name="FR_thigh_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.062 0.00"/>
+        <parent link="FR_hip"/>
+        <child link="FR_thigh"/>
+	<limit effort="18" lower="-2.6" upper="2.6" velocity="40"/>
+    </joint>
+    <link name="FR_thigh">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.634"/>
+            <origin xyz="0.0 0.016 -0.02"/>
+            <inertia ixx="0.001983" ixy="0.000245" ixz="0.000013" 
+                iyy="0.002103" iyz="0.0000015" izz="0.000408"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_upper_link.obj"/-->
+	      <cylinder length ="0.17" radius = "0.015"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.105"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_upper_link.obj"/-->
+	      <cylinder length ="0.17" radius = "0.015"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.105"/>
+        </collision>
+    </link>
+
+    <joint name="FR_calf_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0.0 0.0 -0.209"/>
+        <parent link="FR_thigh"/>
+        <child link="FR_calf"/>
+	<limit effort="26" lower="-2.6" upper="2.6" velocity="26"/>
+    </joint>
+    <link name="FR_calf">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.064"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000245" ixy="0" ixz="0.0" iyy="0.000248" iyz="0" izz="0.000006"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	      <cylinder length ="0.15" radius = "0.01"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 -0.095"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	      <cylinder length ="0.15" radius = "0.01"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 -0.095"/>
+        </collision>
+    </link>
+
+    <!-- Adapter to Foot joint -->
+    <joint name="FR_foot_fixed" type="fixed">
+        <parent link="FR_calf"/>
+        <child link="FR_foot"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.19"/>
+    </joint>
+
+    <link name="FR_foot">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.0"/>
+            <inertia ixx="0.000025" ixy="0" ixz="0.0" iyy="0.000025" iyz="0" izz="0.000025"/>
+        </inertial>
+	<visual>
+            <geometry>
+              <sphere radius = "0.0175"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+	<collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	       <sphere radius = "0.0175"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0" xyz="0.0 0.0 0"/>
+        </collision>
+    </link>
+	
+
+
+
+<!--!!!!!!!!!!!! Hind Left Leg !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="RL_hip_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="-0.19 0.049 0.0"/>
+        <parent link="trunk"/>
+        <child link="RL_hip"/>
+	<limit effort="18" lower="-1.6" upper="1.6" velocity="40"/>
+    </joint>
+    <link name="RL_hip">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.54"/>
+            <origin xyz="0.0 0.036 0."/>
+            <inertia ixx="0.000381" ixy="0.000058" ixz="0.00000045" 
+                iyy="0.000560" iyz="0.00000095" izz="0.000444"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.01" radius = "0.0475"/>
+            </geometry>
+            <!--origin rpy="3.141592 0.0 -1.5708" xyz="0.055 0.0 0.0"/-->
+	    <origin rpy="3.141592 1.5708 -1.5708" xyz="0.055 0.0 0.0"/>
+        </visual>
+	<visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.06" radius = "0.0425"/>
+            </geometry>
+            <!--origin rpy="3.141592 0.0 1.5708" xyz="-0.055 0.0 0.0"/-->
+	    <origin rpy="1.5708 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.01" radius = "0.0475"/>
+            </geometry>
+            <origin rpy="3.141592 1.5708 -1.5708" xyz="0.055 0 0"/>
+        </collision>
+	<collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.06" radius = "0.0425"/>
+            </geometry>
+            <origin rpy="1.5708 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <joint name="RL_hip_fixed" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.081 0"/>
+    <parent link="RL_hip"/>
+    <child link="RL_thigh_shoulder"/>
+  </joint>
+  <!-- this link is only for collision -->
+  <link name="RL_thigh_shoulder">
+    <!-- <collision>
+      <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.032" radius="0.041"/>
+      </geometry>
+    </collision> -->
+  </link>
+
+    <joint name="RL_thigh_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.062 0.00"/>
+        <parent link="RL_hip"/>
+        <child link="RL_thigh"/>
+	<limit effort="18" lower="-2.6" upper="2.6" velocity="40"/>
+    </joint>
+    <link name="RL_thigh">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.634"/>
+            <origin xyz="0.0 0.016 -0.02"/>
+            <inertia ixx="0.001983" ixy="0.000245" ixz="0.000013" 
+                iyy="0.002103" iyz="0.0000015" izz="0.000408"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_upper_link.obj"/-->
+	      <cylinder length ="0.17" radius = "0.015"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.105"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_upper_link.obj"/-->
+	      <cylinder length ="0.17" radius = "0.015"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.105"/>
+        </collision>
+    </link>
+
+    <joint name="RL_calf_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0.0 0.0 -0.209"/>
+        <parent link="RL_thigh"/>
+        <child link="RL_calf"/>
+	<limit effort="26" lower="-2.6" upper="2.6" velocity="26"/>
+    </joint>
+    <link name="RL_calf">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.064"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000245" ixy="0" ixz="0.0" iyy="0.000248" iyz="0" izz="0.000006"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	      <cylinder length ="0.15" radius = "0.01"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 -0.095"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	      <cylinder length ="0.15" radius = "0.01"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 -0.095"/>
+        </collision>
+    </link>
+
+    <!-- Adapter to Foot joint -->
+    <joint name="RL_foot_fixed" type="fixed">
+        <parent link="RL_calf"/>
+        <child link="RL_foot"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.19"/>
+    </joint>
+
+    <link name="RL_foot">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.0"/>
+            <inertia ixx="0.000025" ixy="0" ixz="0.0" iyy="0.000025" iyz="0" izz="0.000025"/>
+        </inertial>
+	<visual>
+            <geometry>
+              <sphere radius = "0.0175"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+	<collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	       <sphere radius = "0.0175"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0" xyz="0.0 0.0 0"/>
+        </collision>
+    </link>
+
+    
+<!--!!!!!!!!!!!! Hind Right Leg !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="RR_hip_joint" type="revolute">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="-0.19 -0.049 0.0"/>
+        <parent link="trunk"/>
+        <child link="RR_hip"/>
+	<limit effort="18" lower="-1.6" upper="1.6" velocity="40"/>
+    </joint>
+    <link name="RR_hip">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.54"/>
+            <origin xyz="0.0 0.036 0."/>
+            <inertia ixx="0.000381" ixy="0.000058" ixz="0.00000045" 
+                iyy="0.000560" iyz="0.00000095" izz="0.000444"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.01" radius = "0.0475"/>
+            </geometry>
+            <!--origin rpy="0.0 0.0 1.5708" xyz="0.055 0.0 0.0"/-->
+	    <origin rpy="0.0 1.5708 1.5708" xyz="0.055 0.0 0.0"/>
+        </visual>
+	<visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.06" radius = "0.0425"/>
+            </geometry>
+            <!--origin rpy="3.141592 0.0 1.5708" xyz="-0.055 0.0 0.0"/-->
+	    <origin rpy="1.5708 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.01" radius = "0.0475"/>
+            </geometry>
+            <origin rpy="0.0 1.5708 1.5708" xyz="0.055 0.0 0.0"/>
+        </collision>
+	<collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_abad.obj"/-->
+	      <cylinder length ="0.06" radius = "0.0425"/>
+            </geometry>
+            <origin rpy="1.5708 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+
+    <joint name="RR_hip_fixed" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.081 0"/>
+    <parent link="RR_hip"/>
+    <child link="RR_thigh_shoulder"/>
+  </joint>
+  <!-- this link is only for collision -->
+  <link name="RR_thigh_shoulder">
+    <!-- <collision>
+      <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.032" radius="0.041"/>
+      </geometry>
+    </collision> -->
+  </link>
+
+    <joint name="RR_thigh_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 -0.062 0.00"/>
+        <parent link="RR_hip"/>
+        <child link="RR_thigh"/>
+	<limit effort="18" lower="-2.6" upper="2.6" velocity="40"/>
+    </joint>
+    <link name="RR_thigh">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.634"/>
+            <origin xyz="0.0 0.016 -0.02"/>
+            <inertia ixx="0.001983" ixy="0.000245" ixz="0.000013" 
+                iyy="0.002103" iyz="0.0000015" izz="0.000408"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_upper_link.obj"/-->
+	      <cylinder length ="0.17" radius = "0.015"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.105"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_upper_link.obj"/-->
+	      <cylinder length ="0.17" radius = "0.015"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.105"/>
+        </collision>
+    </link>
+
+    <joint name="RR_calf_joint" type="revolute">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0.0 0.0 -0.209"/>
+        <parent link="RR_thigh"/>
+        <child link="RR_calf"/>
+	<limit effort="26" lower="-2.6" upper="2.6" velocity="26"/>
+    </joint>
+    <link name="RR_calf">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.064"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000245" ixy="0" ixz="0.0" iyy="0.000248" iyz="0" izz="0.000006"/>
+        </inertial>
+        <visual>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	      <cylinder length ="0.15" radius = "0.01"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 -0.095"/>
+        </visual>
+        <collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	      <cylinder length ="0.15" radius = "0.01"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0 0 -0.095"/>
+        </collision>
+
+    </link>
+
+    <!-- Adapter to Foot joint -->
+    <joint name="RR_foot_fixed" type="fixed">
+        <parent link="RR_calf"/>
+        <child link="RR_foot"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 -0.19"/>
+    </joint>
+
+    <link name="RR_foot">
+        <material name="cheetah_material"/>
+        <inertial>
+            <mass value="0.0"/>
+            <inertia ixx="0.000025" ixy="0" ixz="0.0" iyy="0.000025" iyz="0" izz="0.000025"/>
+        </inertial>
+	<visual>
+            <geometry>
+              <sphere radius = "0.0175"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+	<collision>
+            <geometry>
+              <!--mesh filename="meshes/mini_lower_link.obj"/-->
+	       <sphere radius = "0.0175"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0" xyz="0.0 0.0 0"/>
+        </collision>
+    </link>
+
+</robot>

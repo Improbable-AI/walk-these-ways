@@ -1,0 +1,13 @@
+struct rc_command_lcmt
+{
+    int16_t mode;
+    float left_stick[2];
+    float right_stick[2];
+    float knobs[2];
+    int16_t left_upper_switch;
+    int16_t left_lower_left_switch;
+    int16_t left_lower_right_switch;
+    int16_t right_upper_switch;
+    int16_t right_lower_left_switch;
+    int16_t right_lower_right_switch;
+}

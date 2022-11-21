@@ -1,0 +1,12 @@
+struct pd_tau_targets_lcmt
+{
+    double q_des[12];
+    double qd_des[12];
+    double tau_ff[12];
+    double kp[12];
+    double kd[12];
+    int64_t timestamp_us;
+    int64_t id;
+    int64_t robot_id;
+    double se_contactState[4];
+}
