@@ -4,6 +4,8 @@ build:
 clean-build:
 	docker build -t jetson-model-deployment . --no-cache=true
 run:
+	docker stop foxy_controller || true
+	docker rm foxy_controller || true
 	docker run -it \
 		--env="DISPLAY" \
 		--env="QT_X11_NO_MITSHM=1" \
