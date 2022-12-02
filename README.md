@@ -23,7 +23,7 @@ This repository provides an implementation of the paper:
 
 
 <td style="padding:20px;width:75%;vertical-align:middle">
-      <a href="">
+      <a href="https://gmargo11.github.io/walk-these-ways/" target="_blank">
       <b> Walk these Ways: Tuning Robot Control for Generalization with Multiplicity of Behavior </b>
       </a>
       <br>
@@ -31,7 +31,7 @@ This repository provides an implementation of the paper:
       <br>
       <em>Conference on Robot Learning</em>, 2022
       <br>
-      <a href="">paper</a> /
+      <a href="https://openreview.net/pdf?id=52c5e73SlS2">paper</a> /
       <a href="">bibtex</a> /
       <a href="https://gmargo11.github.io/walk-these-ways/" target="_blank">project page</a>
     <br>
