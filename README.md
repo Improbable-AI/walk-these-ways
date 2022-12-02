@@ -16,7 +16,6 @@
     2. [Deploying a Custom Model](#configuration)
     4. [Deployment and Logging](#deployment)
     5. [Analyzing Real-world Performance](#plotting)
-5. [Acknowledgements](#acknowledgements)
 
 ## Overview <a name="introduction"></a>
 
@@ -25,7 +24,7 @@ This repository provides an implementation of the paper:
 
 <td style="padding:20px;width:75%;vertical-align:middle">
       <a href="">
-      <b> Walk these Ways: Learning with Parametric Auxiliary Rewards for an Uncertain Future </b>
+      <b> Walk these Ways: Tuning Robot Control for Generalization with Multiplicity of Behavior </b>
       </a>
       <br>
       <a href="https://gmargo11.github.io/" target="_blank">Gabriel B. Margolis</a> and <a href="https://people.csail.mit.edu/pulkitag" target="_blank">Pulkit Agrawal</a>
@@ -34,7 +33,7 @@ This repository provides an implementation of the paper:
       <br>
       <a href="">paper</a> /
       <a href="">bibtex</a> /
-      <a href="https://sites.google.com/view/gait-conditioned-rl/" target="_blank">project page</a>
+      <a href="https://gmargo11.github.io/walk-these-ways/" target="_blank">project page</a>
     <br>
 </td>
 
@@ -57,8 +56,6 @@ Our initial release provides the following features:
 **Simulated Training and Evaluation**: Isaac Gym requires an NVIDIA GPU. To train in the default configuration, we recommend a GPU with at least 10GB of VRAM. The code can run on a smaller GPU if you decrease the number of parallel environments (`Cfg.env.num_envs`). However, training will be slower with fewer environments.
 
 **Hardware Deployment**: We provide deployment code for the Unitree Go1 Edu robot. This relatively low-cost, commercially available quadruped can be purchased here: https://shop.unitree.com/. You will need the Edu version of the robot to run and customize your locomotion controller.
-
-<b>Users are advised to follow Unitree's recommendations for safety while using the Go1 in low-level control mode. This means hanging up the robot and keeping it away from people and obstacles. Use our code at your own risk; we do not take responsibility for any damage.</b>
 
 ## Training a Model <a name="simulation"></a>
 
@@ -175,6 +172,16 @@ If it does not appear, and you're working in docker, make sure you haven't forgo
 
 
 ## Deploying a Model  <a name="realworld"></a>
+
+### Safety Recommendations  <a name="robotconfig"></a>
+
+<i><b>Users are advised to follow Unitree's recommendations for safety while using the Go1 in low-level control mode.</b></i>
+- This means hanging up the robot and keeping it away from people and obstacles. 
+- In practice, the main safety consideration we've found important has been not plug anything into the robot's back (ethernet cable, USB) during the initial calibration or when testing a new policy because it can hurt the robot in case of a fall. 
+- Our code implements the safety layer from Unitree's `unitree_legged_sdk` with PowerProtect level 9. This will cut off power to the motors if the joint torque is too high (could happen sometimes during fast running)
+- <b>This is research code; use at your own risk; we do not take responsibility for any damage.</b>
+
+
 ### Installing the Deployment Utility  <a name="robotconfig"></a>
 
 The first step is to connect your development machine to the robot using ethernet. You should ping the robot to verify the connection: `ping 192.168.123.15` should return `x packets transmitted, x received, 0% packet loss`.
