@@ -80,7 +80,8 @@ class StateEstimator:
         self.contact_state = np.ones(4)
 
         self.mode = 0
-        self.ctrlmode = 0
+        self.ctrlmode_left = 0
+        self.ctrlmode_right = 0
         self.left_stick = [0, 0]
         self.right_stick = [0, 0]
         self.left_upper_switch = 0
@@ -145,74 +146,50 @@ class StateEstimator:
         return self.euler
 
     def get_command(self):
-        MODES = ["mobility", "body_control", "footswing"]
+        MODES_LEFT = ["body_height", "lat_vel", "stance_width"]
+        MODES_RIGHT = ["step_frequency", "footswing_height", "body_pitch"]
 
         if self.left_upper_switch_pressed:
-            self.ctrlmode = (self.ctrlmode + 1) % 3
+            self.ctrlmode_left = (self.ctrlmode_left + 1) % 3
             self.left_upper_switch_pressed = False
-            print(f"PRESSED{self.ctrlmode}")
-        # elif self.left_lower_left_switch_pressed:
-        #     self.ctrlmode = 0
-        #     self.left_lower_left_switch_pressed = False
-        #     print("PRESSED0")
+        if self.right_upper_switch_pressed:
+            self.ctrlmode_right = (self.ctrlmode_right + 1) % 3
+            self.right_upper_switch_pressed = False
 
-        MODE = MODES[self.ctrlmode]
+        MODE_LEFT = MODES_LEFT[self.ctrlmode_left]
+        MODE_RIGHT = MODES_RIGHT[self.ctrlmode_right]
 
-        if MODE == "mobility":
-            cmd_x = 1 * self.left_stick[1]
-            cmd_y = 0  # -1 * self.left_stick[0]
-            cmd_yaw = -1 * self.right_stick[0]
-            # cmd_height = 0.3 * self.right_stick[1]
+        # always in use
+        cmd_x = 1 * self.left_stick[1]
+        cmd_yaw = -1 * self.right_stick[0]
+
+        # default values
+        cmd_y = 0.  # -1 * self.left_stick[0]
+        cmd_height = 0.
+        cmd_footswing = 0.08
+        cmd_stance_width = 0.33
+        cmd_stance_length = 0.40
+        cmd_ori_pitch = 0.
+        cmd_ori_roll = 0.
+        cmd_freq = 3.0
+
+        # joystick commands
+        if MODE_LEFT == "body_height":
             cmd_height = 0.3 * self.left_stick[0]
-            cmd_footswing = 0.08  # max(0, self.left_stick[0]) * 0.27 + 0.03
-
-            cmd_stance_width = 0.33
-            cmd_stance_length = 0.45
-            cmd_ori_pitch = 0.15
-            cmd_ori_roll = 0
-
-            min_freq = 2.0
-            max_freq = 4.0
-            cmd_freq = (1 + self.right_stick[1]) / 2 * (max_freq - min_freq) + min_freq
-        elif MODE == "body_control":
-            cmd_x = 1 * self.left_stick[1]
-            cmd_y = 0  # -1 * self.left_stick[0]
-            cmd_yaw = -1 * self.right_stick[0]
-            cmd_height = 0.0
-            cmd_footswing = 0.10  # max(0, self.left_stick[0]) * 0.27 + 0.03
-
+        elif MODE_LEFT == "lat_vel":
+            cmd_y = 0.6 * self.left_stick[0]
+        elif MODE_LEFT == "stance_width":
             cmd_stance_width = 0.275 + 0.175 * self.left_stick[0]
-            cmd_stance_length = 0.45  # 0.45 + 0.25 * self.left_stick[1]
-            cmd_ori_pitch = -0.4 * self.right_stick[1]
-            cmd_ori_roll = 0.0  # 0.5 * self.right_stick[1]
-            cmd_freq = 3.2
-        else:
-            cmd_x = 1 * self.left_stick[1]
-            cmd_y = 0  # -1 * self.left_stick[0]
-            cmd_yaw = -1 * self.right_stick[0]
-            cmd_height = 0.0
-            cmd_footswing = max(0, self.left_stick[0]) * 0.32 + 0.03
-            # cmd_footswing = max(0, self.left_stick[0]) * 0.29 + 0.03
-
-            cmd_stance_width = 0.3  # + 0.175 * self.left_stick[0]
-            cmd_stance_length = 0.40  # + 0.15 * self.left_stick[1]
-            cmd_ori_pitch = 0.0  # -0.3 * self.left_stick[0]
-            cmd_ori_roll = 0.0  # 0.5 * self.right_stick[1]
-
+        if MODE_RIGHT == "step_frequency":
             min_freq = 2.0
             max_freq = 4.0
             cmd_freq = (1 + self.right_stick[1]) / 2 * (max_freq - min_freq) + min_freq
+        elif MODE_RIGHT == "footswing_height":
+            cmd_footswing = max(0, self.right_stick[1]) * 0.32 + 0.03
+        elif MODE_RIGHT == "body_pitch":
+            cmd_ori_pitch = -0.4 * self.right_stick[1]
 
-        # cmd_freq = (1 + self.left_stick[0]) / 2 * (max_freq-min_freq) + min_freq
-
-        # if self.left_upper_switch_pressed:
-        #     if self.cmd_phase == 0.5:
-        #         self.cmd_phase = 0.0
-        #     elif self.cmd_phase == 0.0:
-        #         self.cmd_phase = 0.25
-        #     else:
-        #         self.cmd_phase = 0.5
-        #     self.left_upper_switch_pressed = False
+        # gait buttons
         if self.mode == 0:
             self.cmd_phase = 0.5
             self.cmd_offset = 0.0
@@ -233,33 +210,11 @@ class StateEstimator:
             self.cmd_offset = 0.0
             self.cmd_bound = 0.5
             self.cmd_duration = 0.5
-        elif self.mode == 4:
-            self.cmd_phase = 0.7
+        else:
+            self.cmd_phase = 0.5
             self.cmd_offset = 0.0
             self.cmd_bound = 0.0
             self.cmd_duration = 0.5
-        elif self.mode == 5:
-            self.cmd_phase = 0.3
-            self.cmd_offset = 0.0
-            self.cmd_bound = 0.0
-            self.cmd_duration = 0.5
-        elif self.mode == 6:
-            self.cmd_phase = 0.0
-            self.cmd_offset = 0.7
-            self.cmd_bound = 0.0
-            self.cmd_duration = 0.5
-        elif self.mode == 7:
-            self.cmd_phase = 0.0
-            self.cmd_offset = 0.3
-            self.cmd_bound = 0.0
-            self.cmd_duration = 0.5
-
-        # cmd_freq = (3.0 if not self.left_upper_switch else 2.0)
-        # cmd_phase = (0.5 if not self.left_lower_left_switch else 0.0)
-        # cmd_offset = 0.0
-        # cmd_duration = 0.5
-
-        # print(cmd_x, cmd_y)
 
         return np.array([cmd_x, cmd_y, cmd_yaw, cmd_height, cmd_freq, self.cmd_phase, self.cmd_offset, self.cmd_bound,
                          self.cmd_duration, cmd_footswing, cmd_ori_pitch, cmd_ori_roll, cmd_stance_width,

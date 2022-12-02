@@ -12,7 +12,7 @@ import pathlib
 
 lc = lcm.LCM("udpm://239.255.76.67:7667?ttl=255")
 
-def load_and_run_policy(label, experiment_name, probe_policy_label=None, max_vel=1.0, max_yaw_vel=1.0, max_vel_probe=1.0):
+def load_and_run_policy(label, experiment_name, max_vel=1.0, max_yaw_vel=1.0):
     # load agent
     dirs = glob.glob(f"../../runs/{label}/*")
     logdir = sorted(dirs)[0]
@@ -27,7 +27,7 @@ def load_and_run_policy(label, experiment_name, probe_policy_label=None, max_vel
     se = StateEstimator(lc)
 
     control_dt = 0.02
-    command_profile = RCControllerProfile(dt=control_dt, state_estimator=se, x_scale=max_vel, y_scale=0.6, yaw_scale=max_yaw_vel, probe_vel_multiplier=(max_vel_probe / max_vel))
+    command_profile = RCControllerProfile(dt=control_dt, state_estimator=se, x_scale=max_vel, y_scale=0.6, yaw_scale=max_yaw_vel)
 
     hardware_agent = LCMAgent(cfg, se, command_profile)
     se.spin()
@@ -37,15 +37,6 @@ def load_and_run_policy(label, experiment_name, probe_policy_label=None, max_vel
 
     policy = load_policy(logdir)
 
-    if probe_policy_label is not None:
-        # load agent
-        dirs = glob.glob(f"../runs/{probe_policy_label}_*")
-        probe_policy_logdir = sorted(dirs)[0]
-        with open(probe_policy_logdir + "/parameters.pkl", 'rb') as file:
-            probe_cfg = pkl.load(file)
-            probe_cfg = probe_cfg["Cfg"]
-        probe_policy = load_policy(probe_policy_logdir)
-
     # load runner
     root = f"{pathlib.Path(__file__).parent.resolve()}/../../logs/"
     pathlib.Path(root).mkdir(parents=True, exist_ok=True)
@@ -53,8 +44,6 @@ def load_and_run_policy(label, experiment_name, probe_policy_label=None, max_vel
                                          log_root=f"{root}/{experiment_name}")
     deployment_runner.add_control_agent(hardware_agent, "hardware_closed_loop")
     deployment_runner.add_policy(policy)
-    if probe_policy_label is not None:
-        deployment_runner.add_probe_policy(probe_policy, probe_cfg)
     deployment_runner.add_command_profile(command_profile)
 
     if len(sys.argv) >= 2:
@@ -83,8 +72,6 @@ def load_policy(logdir):
 if __name__ == '__main__':
     label = "gait-conditioned-agility/pretrain-v0/train"
 
-    probe_policy_label = None
-
     experiment_name = "example_experiment"
 
-    load_and_run_policy(label, experiment_name=experiment_name, probe_policy_label=probe_policy_label, max_vel=3.0, max_yaw_vel=5.0, max_vel_probe=1.0)
+    load_and_run_policy(label, experiment_name=experiment_name, max_vel=3.5, max_yaw_vel=5.0)

@@ -58,10 +58,6 @@ class DeploymentRunner:
     def add_policy(self, policy):
         self.policy = policy
 
-    def add_probe_policy(self, probe_policy, probe_cfg):
-        self.probe_policy = probe_policy
-        self.probe_cfg = probe_cfg
-
     def add_command_profile(self, command_profile):
         self.command_profile = command_profile
 
@@ -146,10 +142,7 @@ class DeploymentRunner:
             for i in range(max_steps):
 
                 policy_info = {}
-                if self.is_currently_probing:
-                    action = self.probe_policy(control_obs, policy_info)
-                else:
-                    action = self.policy(control_obs, policy_info)
+                action = self.policy(control_obs, policy_info)
 
                 for agent_name in self.agents.keys():
                     obs, ret, done, info = self.agents[agent_name].step(action)
@@ -172,7 +165,7 @@ class DeploymentRunner:
                 prev_button_states = self.button_states[:]
                 self.button_states = self.command_profile.get_buttons()
 
-                if self.command_profile.state_estimator.right_upper_switch_pressed:
+                if self.command_profile.state_estimator.left_lower_left_switch_pressed:
                     if not self.is_currently_probing:
                         print("START LOGGING")
                         self.is_currently_probing = True
@@ -190,7 +183,7 @@ class DeploymentRunner:
                         self.logger.reset()
                         time.sleep(1)
                         control_obs = self.agents[self.control_agent_name].reset()
-                    self.command_profile.state_estimator.right_upper_switch_pressed = False
+                    self.command_profile.state_estimator.left_lower_left_switch_pressed = False
 
                 for button in range(4):
                     if self.command_profile.currently_triggered[button]:
