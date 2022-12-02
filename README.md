@@ -47,8 +47,8 @@ Rudin, Robotic Systems Lab, ETH Zurich. All redistributed code retains its
 original [license](LICENSES/legged_gym/LICENSE).
 
 Our initial release provides the following features:
-* Train reinforcement learning policies for the Go1 robot using PPO, IsaacGym, Domain Randomization and Parametric Auxiliary Rewards.
-* Evaluate a pretrained parametric auxiliary reward policy in simulation.
+* Train reinforcement learning policies for the Go1 robot using PPO, IsaacGym, Domain Randomization, and Multiplicity of Behavior (MoB).
+* Evaluate a pretrained MoB policy in simulation.
 * Deploy learned policies on the Go1 using the `unitree_legged_sdk`.
 
 ## System Requirements <a name="requirements"></a>
