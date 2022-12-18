@@ -77,18 +77,18 @@ void Custom::init()
         joint_command_simple.kd[i] = 0.5;
     }
 
-    joint_command_simple.q_des[0] = 0.1;
-    joint_command_simple.q_des[1] = 0.8;
-    joint_command_simple.q_des[2] = -1.5;
-    joint_command_simple.q_des[3] = -0.1;
-    joint_command_simple.q_des[4] = 0.8;
-    joint_command_simple.q_des[5] = -1.5;
-    joint_command_simple.q_des[6] = 0.1;
-    joint_command_simple.q_des[7] = 1.0;
-    joint_command_simple.q_des[8] = -1.5;
-    joint_command_simple.q_des[9] = -0.1;
-    joint_command_simple.q_des[10] = 0.8;
-    joint_command_simple.q_des[11] = -1.5;
+    joint_command_simple.q_des[0] = -0.3;
+    joint_command_simple.q_des[1] = 1.2;
+    joint_command_simple.q_des[2] = -2.721;
+    joint_command_simple.q_des[3] = 0.3;
+    joint_command_simple.q_des[4] = 1.2;
+    joint_command_simple.q_des[5] = -2.721;
+    joint_command_simple.q_des[6] = -0.3;
+    joint_command_simple.q_des[7] = 1.2;
+    joint_command_simple.q_des[8] = -2.721;
+    joint_command_simple.q_des[9] = 0.3;
+    joint_command_simple.q_des[10] = 1.2;
+    joint_command_simple.q_des[11] = -2.721;
 
     printf("SET NOMINAL POSE");
 
