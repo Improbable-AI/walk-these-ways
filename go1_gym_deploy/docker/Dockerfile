@@ -79,27 +79,27 @@ RUN apt-get install -y vim
 #RUN pip3 install pandas
 
 # ROS
-ENV ROS_DISTRO melodic
+# ENV ROS_DISTRO melodic
 
 RUN apt-get install -y gnupg
 
-COPY install_scripts/install_ros.sh /tmp/install_ros.sh
-RUN chmod +x /tmp/install_ros.sh
-RUN /tmp/install_ros.sh
+# COPY install_scripts/install_ros.sh /tmp/install_ros.sh
+# RUN chmod +x /tmp/install_ros.sh
+# RUN /tmp/install_ros.sh
 
-# bootstrap rosdep
-RUN rosdep init \
-  && rosdep update
+# # bootstrap rosdep
+# RUN rosdep init \
+#   && rosdep update
 
-# create catkin workspace
-ENV CATKIN_WS=/root/catkin_ws
-RUN bash /opt/ros/melodic/setup.bash
-RUN mkdir -p $CATKIN_WS/src
-WORKDIR ${CATKIN_WS}
-RUN catkin init
-RUN catkin config --extend /opt/ros/$ROS_DISTRO \
-    --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_ENABLE_TESTING=False
-WORKDIR $CATKIN_WS/src
+# # create catkin workspace
+# ENV CATKIN_WS=/root/catkin_ws
+# RUN bash /opt/ros/melodic/setup.bash
+# RUN mkdir -p $CATKIN_WS/src
+# WORKDIR ${CATKIN_WS}
+# RUN catkin init
+# RUN catkin config --extend /opt/ros/$ROS_DISTRO \
+#     --cmake-args -DCMAKE_BUILD_TYPE=Release -DCATKIN_ENABLE_TESTING=False
+# WORKDIR $CATKIN_WS/src
 
 
 RUN apt-get update && apt-get install -y freeglut3-dev libudev-dev

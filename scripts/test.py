@@ -38,7 +38,7 @@ def run_env(render=False, headless=False):
     Cfg.env.priv_observe_base_mass = False
     Cfg.domain_rand.added_mass_range = [-1.0, 3.0]
     Cfg.domain_rand.randomize_gravity = True
-    Cfg.domain_rand.gravity_range = [-2.0, 2.0]
+    Cfg.domain_rand.gravity_range = [-1.0, 1.0]
     Cfg.domain_rand.gravity_rand_interval_s = 2.0
     Cfg.domain_rand.gravity_impulse_duration = 0.5
     Cfg.env.priv_observe_gravity = True
