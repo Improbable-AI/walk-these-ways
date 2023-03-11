@@ -16,8 +16,9 @@
     2. [Deploying a Custom Model](#configuration)
     4. [Deployment and Logging](#deployment)
     5. [Analyzing Real-world Performance](#plotting)
+5. [Debugging Common Errors](#debugging)
 
-## Overview <a name="introduction"></a>
+## Overview <a name="overview"></a>
 
 This repository provides an implementation of the paper:
 
@@ -153,7 +154,7 @@ Username: `runs`
 API: [server IP] (defaults to `localhost:8081`)
 Access Token: [blank]
 
-Now, clicking on the profile should yield a 
+Now, clicking on the profile should yield a dashboard interface visualizing the training runs.
 
 ### Analyzing the Policy <a name="analysis"></a>
 
@@ -237,3 +238,12 @@ The RC mapping is depicted above.
 <i>Coming soon</i>
 ### Analyzing Real-world Performance <a name="plotting"></a>
 <i>Coming soon</i>
+
+
+## Debugging Common Errors  <a name="rcconfig"></a>
+
+| Bug      | Solution | First report |
+| ----------- | ----------- | ---------- |
+| Out of disk space     | If you run out of disk space during `cd ~/go1_gym/go1_gym_deploy/installer && ./install_deployment_code.sh` consider changing the script to use `192.168.123.13` instead (at least in my Go1 Edu with 3 Jetson nano, I only had the required disk space to copy the tar and extract the image in only `192.168.123.13`). Alternatively, consider deploying on an external PC.       | https://github.com/Improbable-AI/walk-these-ways/issues/7 |
+| `lcm_position` syntax error  | When deploying with `sudo ./start_unitree_sdk.sh` on an external PC/NUC, if you get the following error: `./lcm_position: 1: Syntax error: word unexpected (expecting ")")`, It is likely because the ./lcm_position has been compiled for ARM aarch64 (to run on the jetson), please recompile it for your architecture(external PC/ NUC) using https://github.com/Improbable-AI/unitree_legged_sdk.        | https://github.com/Improbable-AI/walk-these-ways/issues/7 |
+
