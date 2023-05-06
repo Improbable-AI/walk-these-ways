@@ -202,8 +202,9 @@ ssh unitree@192.168.123.15
 Now, run the following commands on the robot's onboard computer:
 
 ```
-cd ~/go1_gym/go1_gym_deploy/installer
-./install_deployment_code.sh
+chmod +x installer/install_deployment_code.sh
+cd ~/go1_gym/go1_gym_deploy/scripts
+sudo ../installer/install_deployment_code.sh
 ```
 
 The installer will automatically unzip and install the docker image containing the deployment environment. 
