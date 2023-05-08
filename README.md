@@ -212,7 +212,7 @@ The installer will automatically unzip and install the docker image containing t
 
 ### Running the Controller  <a name="runcontroller"></a>
 
-Place the robot into damping mode. The control sequence is: [L1+B], [L1+A], [L1+L2+START]. After this, the robot should sit on the ground and the joints should move freely. 
+Place the robot into damping mode. The control sequence is: [L2+A], [L2+B], [L1+L2+START]. After this, the robot should sit on the ground and the joints should move freely. 
 
 Now, ssh to `unitree@192.168.123.15` and run the following two commands to start the controller. <b>This will operate the robot in low-level control mode. Make sure your Go1 is hung up.</b>
 
