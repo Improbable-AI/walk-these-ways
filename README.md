@@ -33,10 +33,22 @@ This repository provides an implementation of the paper:
       <em>Conference on Robot Learning</em>, 2022
       <br>
       <a href="https://openreview.net/pdf?id=52c5e73SlS2">paper</a> /
-      <a href="">bibtex</a> /
       <a href="https://gmargo11.github.io/walk-these-ways/" target="_blank">project page</a>
     <br>
 </td>
+
+<br>
+
+If you use this repository in your work, consider citing:
+
+```
+@article{margolis2022walktheseways,
+    title={Walk These Ways: Tuning Robot Control for Generalization with Multiplicity of Behavior},
+    author={Margolis, Gabriel B and Agrawal, Pulkit},
+    journal={Conference on Robot Learning},
+    year={2022}
+}
+```
 
 <br>
 
