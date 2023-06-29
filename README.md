@@ -246,7 +246,13 @@ The robot will wait for you to press [R2], then calibrate, then wait for a secon
 ![RC Mapping](media/rc_map.png?raw=true)
 The RC mapping is depicted above. 
 ### Deploying a Custom Model  <a name="configuration"></a>
-<i>Coming soon</i>
+
+After training a custom model, it will be saved in the `runs` folder (https://github.com/Improbable-AI/walk-these-ways/tree/master/runs/). Note the relative location of your custom model of the `train` folder (for the default policy), it's `gait-conditioned-agility/pretrain-v0/train`. We'll denote this as `$PDIR`.
+
+To play the custom model in simulation first, replace the line https://github.com/Improbable-AI/walk-these-ways/blob/master/scripts/play.py#L97 with `label = "$PDIR"`.
+
+To deploy on the robot, replace the line https://github.com/Improbable-AI/walk-these-ways/blob/master/go1_gym_deploy/scripts/deploy_policy.py#L73 with `label = "$PDIR"`. Then re-run the `send_to_unitree.sh` script to update the files on the robot.
+
 ### Logging and Debugging <a name="deployment"></a>
 <i>Coming soon</i>
 ### Analyzing Real-world Performance <a name="plotting"></a>
