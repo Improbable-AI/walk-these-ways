@@ -133,7 +133,7 @@ scripts
 
 You can run the `test.py` script to verify your environment setup. If it runs then you have installed the gym
 environments correctly. To train an agent, run `train.py`. To evaluate a pretrained agent, run `play.py`. We provie a
-pretrained agent checkpoint in the [./runs/pretrain-v0](runs/pretrain-v0) directory.
+pretrained agent checkpoint in the [./runs/pretrain-v0](runs/gait-conditioned-agility/pretrain-v0) directory.
 
 
 
