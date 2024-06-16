@@ -34,7 +34,7 @@ class BaseTask(gym.Env):
         # graphics device for rendering, -1 for no rendering
         self.graphics_device_id = self.sim_device_id
         if self.headless == True:
-            self.graphics_device_id = self.sim_device_id
+            self.graphics_device_id = -1
 
         self.num_obs = cfg.env.num_observations
         self.num_privileged_obs = cfg.env.num_privileged_obs
